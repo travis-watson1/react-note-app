@@ -31,12 +31,16 @@ class App extends React.Component {
     .catch((err) => console.log(err.response.data));
   }
 
+  getNote = () => {
+    console.log("Clicked!");
+  }
+
   render(){
     const { showNote, notes } = this.state;
   return (
     <div className="App">
       <Nav toggleNote={this.toggleNote} showNote = { showNote } />
-      { showNote ? <Note /> : <List getNotes={this.getNotes} notes={notes}/> }
+      { showNote ? <Note /> : <List getNotes={this.getNotes} notes={notes} getNote={this.getNote}/> }
     </div>
   );
   }

@@ -8,14 +8,15 @@ class List extends React.Component {
   }
 
   render() {
-    const { notes } = this.props;
+    const { notes, getNote } = this.props;
 
     const cards = notes.map((note,index) => {
       return(
         <NoteCard
           key={index}
           index={index}
-          note={note} />
+          note={note}
+          getNote = {getNote} />
       );
     });
 
