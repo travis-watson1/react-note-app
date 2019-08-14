@@ -15,7 +15,8 @@ class App extends React.Component {
     super();
     this.state = {
       showNote: false,
-      notes: []
+      notes: [],
+      note: {}
     };
   }
 
@@ -31,16 +32,18 @@ class App extends React.Component {
     .catch((err) => console.log(err.response.data));
   }
 
-  getNote = () => {
-    console.log("Clicked!");
+  getNote = (id) => {
+    axios.get(urlFor('notes/' + id))
+    .then((res) => this.setState({ note: res.data, showNote: true }))
+    .catch((err) => console.log(err.response.data));
   }
 
   render(){
-    const { showNote, notes } = this.state;
+    const { showNote, notes, note } = this.state;
   return (
     <div className="App">
       <Nav toggleNote={this.toggleNote} showNote = { showNote } />
-      { showNote ? <Note /> : <List getNotes={this.getNotes} notes={notes} getNote={this.getNote}/> }
+      { showNote ? <Note  note={note} /> : <List getNotes={this.getNotes} notes={notes} getNote={this.getNote} /> }
     </div>
   );
   }
