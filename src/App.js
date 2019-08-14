@@ -16,7 +16,8 @@ class App extends React.Component {
     this.state = {
       showNote: false,
       notes: [],
-      note: {}
+      note: {},
+      newTag: false
     };
   }
 
@@ -46,6 +47,10 @@ class App extends React.Component {
     .catch((err)=> console.log(err.response.data));
   }
 
+  showTagForm = () => {
+    this.setState({ newTag: true });
+  }
+
   performSubmissionRequest = (data, id) =>{
     if (id) {
       return axios.patch(urlFor(`notes/${id}`), data);
@@ -60,13 +65,42 @@ class App extends React.Component {
     .catch((err)=> console.log(err.response.data));
   }
 
+  closeTagForm = () => {
+    this.setState({ newTag: false });
+  }
+
+  submitTag = (data, noteId) => {
+    axios.post(urlFor(`notes/${noteId}/tags`), data)
+    .then((res) => this.getNote(noteId) )
+    .catch((err) => console.log(err.response.data) );
+  }
+
+  deleteTag  = (noteId, id) => {
+    axios.delete(urlFor(`/tags/${id}`))
+    .then((res) => this.getNote(noteId) )
+    .catch((err) => console.log(err.response.data) );
+  }
+  
+  
 
   render(){
-    const { showNote, notes, note } = this.state;
+    const { showNote, notes, note, newTag } = this.state;
   return (
     <div className="App">
       <Nav toggleNote={this.toggleNote} showNote = { showNote } />
-      { showNote ? <Note  note={note} submitNote={this.submitNote} /> : <List getNotes={this.getNotes} notes={notes} getNote={this.getNote} deleteNote={this.deleteNote} /> }
+      { showNote ? <Note  note={note} 
+                          submitNote={this.submitNote} 
+                          showTagForm={this.showTagForm} 
+                          newTag={newTag} 
+                          closeTagForm={this.closeTagForm} 
+                          submitTag={this.submitTag} 
+                          deleteTag={this.deleteTag} /> 
+                          : 
+                          <List 
+                          getNotes={this.getNotes} 
+                          notes={notes} 
+                          getNote={this.getNote} 
+                          deleteNote={this.deleteNote} /> }
     </div>
   );
   }
