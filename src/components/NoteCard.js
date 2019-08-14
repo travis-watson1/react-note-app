@@ -13,7 +13,7 @@ class NoteCard extends React.Component{
     render(){
         const { note, getNote, deleteNote } = this.props;
         return(
-            <div className="note-card-container">NoteCard Component
+            <div className="note-card-container">
             <div className="note-card-title">{note.title}</div>
             <div className="note-card-content">{note.content}</div>
             <div className="note-card-tags">
